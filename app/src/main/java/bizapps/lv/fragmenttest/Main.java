@@ -3,8 +3,7 @@ package bizapps.lv.fragmenttest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.*;
 
 public class Main extends AppCompatActivity {
     @Override
@@ -14,6 +13,10 @@ public class Main extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportFragmentManager().beginTransaction()
+                                    .add(R.id.fragment_place, new MainFragment())
+                                    .commit();
     }
 
     @Override
@@ -28,16 +31,10 @@ public class Main extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.action_settings) {
-            MainFragment mf = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-
-            if(mf != null) {
-                mf.gv.invalidateViews();
-            }
 
             return true;
         }
         else if(id == R.id.action_search) {
-
 
             return true;
         }
