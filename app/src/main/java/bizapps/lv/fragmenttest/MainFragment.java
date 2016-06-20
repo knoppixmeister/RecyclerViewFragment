@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.*;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.UUID;
 
@@ -68,6 +69,8 @@ public class MainFragment extends Fragment {
 
                                 @Override
                                 protected Void doInBackground(Void... voids) {
+                                    Toast.makeText(getActivity(), "START LOADING ...", Toast.LENGTH_SHORT).show();
+
                                     loading = true;
 
                                     try {
@@ -97,6 +100,8 @@ public class MainFragment extends Fragment {
                                     recyclerViewAdapter.notifyDataSetChanged();
 
                                     loading = false;
+
+                                    Toast.makeText(getActivity(), "END OF LOAD", Toast.LENGTH_SHORT).show();
                                 }
                             }.execute();
                         }
