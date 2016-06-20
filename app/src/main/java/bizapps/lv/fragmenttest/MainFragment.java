@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class MainFragment extends Fragment {
@@ -33,6 +34,8 @@ public class MainFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+
+        if(App.results == null) App.results = new LinkedList<>();
 
         for(int i=0; i<3; i++) {
             App.results.add(UUID.randomUUID().toString());
