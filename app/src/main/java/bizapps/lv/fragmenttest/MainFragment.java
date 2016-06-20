@@ -7,7 +7,14 @@ import android.os.Bundle;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
+
+import java.io.IOException;
 import java.util.*;
+
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -28,12 +35,13 @@ public class MainFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new GridLayoutManager(getActivity(), 2);
+                        //new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
         if(App.results == null) App.results = new LinkedList<>();
 
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<20; i++) {
             App.results.add(UUID.randomUUID().toString());
         }
 
@@ -58,16 +66,13 @@ public class MainFragment extends Fragment {
 
                     if(!loading) {
                         if((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = true;
+
+                            Toast.makeText(getActivity(), "START LOADING ...", Toast.LENGTH_SHORT).show();
+
                             new AsyncTask<Void, Void, Void>() {
                                 @Override
-                                protected void onPreExecute() {
-                                    super.onPreExecute();
-                                }
-
-                                @Override
                                 protected Void doInBackground(Void... voids) {
-                                    Toast.makeText(getActivity(), "START LOADING ...", Toast.LENGTH_SHORT).show();
-
                                     loading = true;
 
                                     try {
@@ -104,8 +109,26 @@ public class MainFragment extends Fragment {
                         }
                     }
                 }
+
             }
         });
+    }
+
+    public void getResults(String query, int page) {
+        OkHttpClient httpClient = new OkHttpClient.Builder().build();
+
+        Request request = new Request.Builder().url("")
+                                                .build();
+
+        Call call = httpClient.newCall(request);
+        try {
+            Response response = call.execute();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+
+            return;
+        }
     }
 }
 
@@ -132,7 +155,7 @@ class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.title.setText(App.results.get(position));
+        holder.title.setText("POS: "+position+"; "+App.results.get(position));
     }
 
     @Override

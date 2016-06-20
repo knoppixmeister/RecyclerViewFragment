@@ -24,7 +24,27 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
-    //compile 'com.squareup.picasso:picasso:2.5.2'
-    //compile 'com.squareup.okhttp3:okhttp:3.2.0'
-    //compile 'com.squareup.moshi:moshi:1.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.squareup.moshi:moshi:1.2.0'
+}
+
+task copyDebugApk(type: Copy) {
+    from 'build/outputs/apk'
+    into 'C:\\Programs\\WAMP703\\apache2\\htdocs'
+    include 'app-debug.apk'
+}
+
+task copyReleaseApk(type: Copy) {
+    from '/'
+    into 'C:\\Programs\\WAMP703\\apache2\\htdocs'
+    include 'app-release.apk'
+}
+
+assembleDebug {}.doLast {
+    tasks.copyDebugApk.execute()
+}
+
+assembleRelease {}.doLast {
+    tasks.copyReleaseApk.execute()
 }

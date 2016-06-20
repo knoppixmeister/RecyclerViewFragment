@@ -30,9 +30,11 @@ public class Main extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportFragmentManager().beginTransaction()
-                                    .add(R.id.fragment_place, new MainFragment())
-                                    .commit();
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                                        .add(R.id.fragment_place, new MainFragment())
+                                        .commit();
+        }
 
         Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
         serviceIntent.setPackage("com.android.vending");
