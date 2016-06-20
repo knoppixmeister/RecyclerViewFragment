@@ -28,6 +28,7 @@ public class Main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        /*
         int id = item.getItemId();
 
         if(id == R.id.action_settings) {
@@ -38,6 +39,7 @@ public class Main extends AppCompatActivity {
 
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
