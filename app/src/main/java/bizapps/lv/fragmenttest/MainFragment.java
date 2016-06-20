@@ -1,5 +1,6 @@
 package bizapps.lv.fragmenttest;
 
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.*;
 import android.widget.TextView;
+
+import java.util.UUID;
 
 public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -32,10 +35,17 @@ public class MainFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        for(int i=0; i<3; i++) {
+            App.results.add(UUID.randomUUID().toString());
+        }
+
         recyclerViewAdapter = new RecyclerViewAdapter();
         recyclerView.setAdapter(recyclerViewAdapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            private boolean loading = false;
+            int pastVisiblesItems, visibleItemCount, totalItemCount;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -43,7 +53,55 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                //super.onScrolled(recyclerView, dx, dy);
+                if(dy > 0) {
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = ((LinearLayoutManager)layoutManager).findFirstVisibleItemPosition();
+
+                    if(!loading) {
+                        if((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected void onPreExecute() {
+                                    super.onPreExecute();
+                                }
+
+                                @Override
+                                protected Void doInBackground(Void... voids) {
+                                    loading = true;
+
+                                    try {
+                                        Thread.sleep(5000);
+                                    }
+                                    catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    finally {
+                                        for(int i=0; i<10; i++) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    App.results.add(UUID.randomUUID().toString());
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Void aVoid) {
+                                    super.onPostExecute(aVoid);
+
+                                    recyclerViewAdapter.notifyDataSetChanged();
+
+                                    loading = false;
+                                }
+                            }.execute();
+                        }
+                    }
+                }
             }
         });
     }
