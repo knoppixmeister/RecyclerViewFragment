@@ -4,14 +4,10 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.*;
 import android.view.*;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.LinkedList;
-import java.util.UUID;
+import android.widget.*;
+import java.util.*;
 
 public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
