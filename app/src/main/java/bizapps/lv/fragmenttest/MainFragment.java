@@ -7,14 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
-
-import java.io.IOException;
 import java.util.*;
-
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 
 public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
